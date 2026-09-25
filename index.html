@@ -162,29 +162,48 @@
         }
 
         function openRecipeModal(id) {
-            const recipe = recipes.find(r => r.id === id);
-            if (!recipe) return;
+    const recipe = recipes.find(r => r.id === id);
+    if (!recipe) return;
 
-            document.getElementById('modalBody').innerHTML = `
-                <div class="modal-header">
-                    <span class="recipe-tag">${recipe.tag}</span>
-                    <h2>${recipe.title}</h2>
-                    <p style="color: #665; margin-bottom: 1rem;">${recipe.desc}</p>
-                </div>
-                <img src="${recipe.image}" alt="${recipe.title}" style="width: 100%; height: 250px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
-                
-                <div class="modal-section-title"><i class="fa-solid fa-basket-shopping"></i> Ingredientes</div>
-                <ul>${recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}</ul>
+    document.getElementById('modalBody').innerHTML = `
+        <div class="modal-header">
+            <span class="recipe-tag">${recipe.tag}</span>
+            <h2>${recipe.title}</h2>
+            <p style="color: #665; margin-bottom: 1rem;">${recipe.desc}</p>
+        </div>
 
-                <div class="modal-section-title"><i class="fa-solid fa-fire-burner"></i> Modo de Preparo</div>
-                <ol>${recipe.prep.map(step => `<li>${step}</li>`).join('')}</ol>
+        <img src="${recipe.image}" alt="${recipe.title}" style="width: 100%; height: 280px; object-fit: cover; border-radius: 12px; margin-bottom: 1.2rem;">
 
-                <div style="background: #FFF3E0; border-left: 4px solid var(--accent); padding: 1rem; border-radius: 8px; margin-top: 1.5rem;">
-                    <strong>💡 Dica do Chef:</strong> ${recipe.tip}
-                </div>
-            `;
-            document.getElementById('recipeModal').style.display = 'flex';
-        }
+        <!-- Crachás de Informações Rápidas -->
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; background: #F5EBE6; padding: 0.8rem 1rem; border-radius: 10px; margin-bottom: 1.5rem; font-size: 0.9rem;">
+            <div>⏱️ <strong>Tempo:</strong> ${recipe.prepTime || '30 min'}</div>
+            <div>🍽️ <strong>Rendimento:</strong> ${recipe.servings || '4 porções'}</div>
+            <div>📊 <strong>Nutrição:</strong> ${recipe.nutrition || 'Consulte os ingredientes'}</div>
+        </div>
+        
+        <div class="modal-section-title"><i class="fa-solid fa-basket-shopping"></i> 🍳 Ingredientes</div>
+        <ul style="padding-left: 1.2rem; margin-bottom: 1rem;">
+            ${recipe.ingredients.map(ing => `<li style="margin-bottom: 0.3rem;">${ing}</li>`).join('')}
+        </ul>
+
+        <div class="modal-section-title"><i class="fa-solid fa-fire-burner"></i> 👨‍🍳 Modo de Preparo</div>
+        <ol style="padding-left: 1.2rem; margin-bottom: 1rem;">
+            ${recipe.prep.map(step => `<li style="margin-bottom: 0.6rem; line-height: 1.5;">${step}</li>`).join('')}
+        </ol>
+
+        ${recipe.substitutions ? `
+            <div style="background: #E8F5E9; border-left: 4px solid #4CAF50; padding: 0.8rem 1rem; border-radius: 8px; margin-top: 1rem; font-size: 0.9rem;">
+                <strong>🔄 Substituição:</strong> ${recipe.substitutions}
+            </div>
+        ` : ''}
+
+        <div style="background: #FFF3E0; border-left: 4px solid var(--accent); padding: 0.8rem 1rem; border-radius: 8px; margin-top: 1rem; font-size: 0.9rem;">
+            <strong>💡 Dica do Chef:</strong> ${recipe.tip}
+        </div>
+    `;
+    document.getElementById('recipeModal').style.display = 'flex';
+}
+ 
 
         function closeRecipeModal() {
             document.getElementById('recipeModal').style.display = 'none';
